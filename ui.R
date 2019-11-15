@@ -71,7 +71,7 @@ ui <- fluidPage(
                 ),
                 
                 column(width = 4,
-                        sliderInput("bitrate", label = h3("Bitrate"), min = 128, max = 320, value = 128, animate = TRUE, post = 'kHz')
+                        sliderInput("bitrate", label = h3("Bitrate"), min = 128, max = 320, value = 128, animate = TRUE, post = 'kB/s')
                        )
                 ),
             hr(),
