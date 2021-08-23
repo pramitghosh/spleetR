@@ -2,7 +2,7 @@ library(shiny)
 options(shiny.maxRequestSize = 10*1024^2)
 library(stringi)
 library(reticulate)
-py_install("spleeter", forge = TRUE)
+# py_install("spleeter", forge = TRUE)
 spleeter = import("spleeter.separator", delay_load = FALSE)
 
 function(input, output)
@@ -53,14 +53,15 @@ function(input, output)
     destination = paste("results/result", stri_rand_strings(1, 10), sep = "_")
     sep$separate_to_file(audio_descriptor = inputaudiofile(), destination = paste("www", destination, sep = "/"),
                                                             codec = codec(), bitrate = bitrate(), synchronous = TRUE)
-    
-    files = list.files(path = paste("www", destination, sep = "/"), pattern = "^(vocals|bass|accompaniment|bass|drums|other|piano)\\.(wav|mp3)$",
+    dir = list.dirs(path = paste("www", destination, sep = "/"), full.names = TRUE, recursive = FALSE)
+
+    files = list.files(path = dir, pattern = "^(vocals|bass|accompaniment|bass|drums|other|piano)\\.(wav|mp3)$",
                        full.names = TRUE, recursive = FALSE)
-    www_dest = paste0("www/", substr(files, 20, 29), "_", substr(files, 31, nchar(files)))
-    file.copy(from = files, to = www_dest)
+    # www_dest = paste0("www/", substr(files, 20, 29), "_", substr(files, 31, nchar(files)))
+    # file.copy(from = files, to = www_dest)
     output$results = renderUI(
       {
-        filename = substr(www_dest, 5, nchar(www_dest))
+        filename = files #substr(www_dest, 5, nchar(www_dest))
         outpaths = list()
         for(i in 1:length(filename))
         {
